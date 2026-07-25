@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<meta name="theme-color" content="#1E3B2C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Filaha.AI — Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#122018;
+    --ink-soft:#3C4A42;
+    --bg:#F6FAF2;
+    --bg-outer:#EDF3E6;
+    --card:#FFFFFF;
+    --forest:#1E3B2C;
+    --forest-2:#16291D;
+    --lime:#8FE05B;
+    --lime-deep:#5FBF3D;
+    --sand:#F3C880;
+    --water:#3FA79B;
+    --danger:#D96B4F;
+    --line:rgba(18,32,24,0.10);
+    --shadow-sm: 0 2px 10px rgba(18,32,24,0.06);
+    --shadow-md: 0 12px 32px rgba(18,32,24,0.10);
+    --shadow-lg: 0 24px 60px rgba(18,32,24,0.18);
+    --display:'Sora', -apple-system, sans-serif;
+    --body:'Manrope', -apple-system, sans-serif;
+    --mono:'JetBrains Mono', 'Courier New', monospace;
+    --display-ar:'Cairo', -apple-system, sans-serif;
+    --body-ar:'Tajawal', -apple-system, sans-serif;
+    --r-sm:14px; --r-md:20px; --r-lg:26px;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+  html[dir="rtl"] body{font-family:var(--body-ar);}
+  html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4,
+  html[dir="rtl"] .app-brand, html[dir="rtl"] .lang-opt, html[dir="rtl"] .help-q,
+  html[dir="rtl"] .about-mini h4, html[dir="rtl"] #screen-history h2{
+    font-family:var(--display-ar);
+  }
+  html[dir="rtl"] .status-pill, html[dir="rtl"] .p-label, html[dir="rtl"] .tab span,
+  html[dir="rtl"] .h-date, html[dir="rtl"] .version-note, html[dir="rtl"] .clear-link,
+  html[dir="rtl"] .msg-bubble .src, html[dir="rtl"] .attach-name{
+    font-family:var(--body-ar); letter-spacing:0;
+  }
+  /* Physical controls stay spatially fixed regardless of language (muscle-memory UX):
+     mic/upload/field/camera/send order, tab bar order, and chip icon+label order never mirror. */
+  .input-bar, .tabbar, .chip{ direction:ltr; }
+  html[dir="rtl"] .chip-label{ direction:rtl; font-family:var(--body-ar); unicode-bidi:plaintext; }
+  html[dir="rtl"] .tab span{ direction:rtl; unicode-bidi:plaintext; }
+  html[dir="rtl"] .text-field{ direction:rtl; font-family:var(--body-ar); }
+  html[dir="rtl"] .msg-bubble{ direction:rtl; }
+  html[dir="rtl"] .h-body{ direction:rtl; }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--bg-outer); color:var(--ink); font-family:var(--body);
+    line-height:1.5; -webkit-font-smoothing:antialiased; overscroll-behavior:none;
+  }
+  img,svg{display:block; max-width:100%;}
+  button{font-family:inherit; border:none; background:none; cursor:pointer;}
+  input{font-family:inherit;}
+  :focus-visible{outline:3px solid var(--lime-deep); outline-offset:2px; border-radius:4px;}
+
+  /* ---------- App shell ---------- */
+  .app-shell{
+    background:var(--bg);
+    display:flex; flex-direction:column;
+    height:100vh; height:100dvh;
+    width:100%;
+    position:relative;
+    overflow:hidden;
+  }
+  @media (min-width:560px){
+    body{display:flex; align-items:center; justify-content:center;}
+    .app-shell{
+      max-width:420px; height:88vh; max-height:900px;
+      margin:0 auto; border-radius:34px;
+      box-shadow:var(--shadow-lg); border:1px solid var(--line);
+    }
+  }
+
+  /* ---------- App bar ---------- */
+  .app-bar{
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 18px 12px;
+    background:var(--bg);
+  }
+  .app-brand{display:flex; align-items:center; gap:8px; font-family:var(--display); font-weight:700; font-size:15px;}
+  .app-brand .mark{
+    width:26px; height:26px; border-radius:9px;
+    background:linear-gradient(135deg, var(--lime) 0%, var(--water) 100%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .app-brand .mark svg{width:14px; height:14px; stroke:var(--forest-2);}
+  .status-pill{
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:10.5px; font-weight:600;
+    background:var(--card); border:1px solid var(--line);
+    padding:6px 10px; border-radius:100px; color:var(--ink-soft);
+  }
+  .status-pill i{width:6px; height:6px; border-radius:50%; background:var(--lime-deep); flex-shrink:0;}
+
+  /* ---------- Screens ---------- */
+  main{flex:1; min-height:0; position:relative;}
+  .screen{
+    position:absolute; inset:0;
+    display:none; flex-direction:column;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+  }
+  .screen.active{display:flex;}
+
+  /* ================= CHAT SCREEN ================= */
+  #screen-chat{padding-bottom:0;}
+  .chat-scroll{flex:1; overflow-y:auto; padding:6px 16px 14px; display:flex; flex-direction:column; gap:12px;}
+
+  .msg{display:flex; gap:9px; max-width:88%;}
+  .msg.user{align-self:flex-end; flex-direction:row-reverse;}
+  .msg-avatar{
+    width:28px; height:28px; border-radius:9px; flex-shrink:0;
+    background:linear-gradient(135deg, var(--lime), var(--water));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .msg-avatar svg{width:14px; height:14px; color:var(--forest-2);}
+  .msg-bubble{
+    background:var(--card); border-radius:16px 16px 16px 4px;
+    padding:11px 13px; font-size:14px; box-shadow:var(--shadow-sm);
+    animation:rise 0.3s ease both;
+  }
+  .msg.user .msg-bubble{
+    background:var(--forest); color:#fff; border-radius:16px 16px 4px 16px;
+  }
+  .msg-bubble .src{
+    display:inline-flex; align-items:center; gap:5px; margin-top:8px;
+    font-family:var(--mono); font-size:9.5px; letter-spacing:0.02em;
+    background:rgba(18,32,24,0.06); padding:3px 8px; border-radius:100px; color:var(--ink-soft);
+  }
+  .msg-bubble .src svg{width:10px; height:10px;}
+  .msg-bubble .photo-thumb{
+    width:100%; max-width:180px; border-radius:12px; margin-bottom:8px;
+    display:block; object-fit:cover; max-height:140px;
+  }
+  @keyframes rise{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .typing{display:flex; gap:4px; padding:4px 2px;}
+  .typing span{width:6px; height:6px; border-radius:50%; background:var(--ink-soft); opacity:0.4; animation:blink 1.2s ease-in-out infinite;}
+  .typing span:nth-child(2){animation-delay:0.15s;}
+  .typing span:nth-child(3){animation-delay:0.3s;}
+  @keyframes blink{0%,80%,100%{opacity:0.25;} 40%{opacity:0.8;}}
+
+  .chips-row{
+    display:flex; gap:8px; padding:2px 16px 12px; overflow-x:auto;
+    scrollbar-width:none; flex-shrink:0;
+  }
+  .chips-row::-webkit-scrollbar{display:none;}
+  .chip{
+    flex-shrink:0; display:flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:11.5px; font-weight:600;
+    background:var(--card); border:1px solid var(--line); color:var(--ink-soft);
+    padding:9px 14px; border-radius:100px; box-shadow:var(--shadow-sm);
+    white-space:nowrap;
+  }
+  .chip svg{width:14px; height:14px; flex-shrink:0;}
+  .chip:active{transform:scale(0.96);}
+
+  /* ---------- Attachment preview (shown after picking a file, before sending) ---------- */
+  .attach-preview{
+    display:none; align-items:center; gap:10px;
+    margin:0 14px 8px; padding:9px 10px;
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    box-shadow:var(--shadow-sm); flex-shrink:0;
+  }
+  .attach-preview.show{display:flex;}
+  .attach-preview img{width:36px; height:36px; border-radius:9px; object-fit:cover; flex-shrink:0;}
+  .attach-preview .attach-icon{
+    width:36px; height:36px; border-radius:9px; flex-shrink:0; background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .attach-preview .attach-icon svg{width:17px; height:17px; color:var(--forest-2);}
+  .attach-name{flex:1; min-width:0; font-size:12.5px; font-weight:600; color:var(--forest-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .attach-remove{
+    width:28px; height:28px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
+  }
+  .attach-remove svg{width:14px; height:14px;}
+  .attach-remove:active{background:var(--bg);}
+
+  .input-bar{
+    flex-shrink:0; display:flex; align-items:center; gap:7px;
+    padding:10px 12px calc(12px + var(--safe-b));
+    background:rgba(246,250,242,0.9); backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+  }
+  .text-field{
+    flex:1 1 auto; min-width:0;
+    border:1px solid var(--line); border-radius:100px;
+    padding:12px 16px; font-size:13.5px; background:var(--card); color:var(--ink);
+  }
+  .text-field::placeholder{color:var(--ink-soft); opacity:0.55;}
+  .round-btn{
+    width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; transition:transform 0.15s ease, opacity 0.15s ease;
+  }
+  .round-btn:active{transform:scale(0.9);}
+  .round-btn.mic{background:linear-gradient(135deg, var(--sand), #E8A94E); color:var(--forest-2); box-shadow:0 6px 16px rgba(232,169,78,0.35);}
+  .round-btn.cam{background:linear-gradient(135deg, var(--water), #2C8A80); color:#fff; box-shadow:0 6px 16px rgba(63,167,155,0.35);}
+  .round-btn.upload{background:var(--card); border:1.5px solid var(--line); color:var(--forest-2); box-shadow:var(--shadow-sm);}
+  .round-btn.send{background:linear-gradient(135deg, var(--lime-deep), var(--forest)); color:#fff; box-shadow:0 6px 16px rgba(95,191,61,0.4);}
+  .round-btn.send.is-empty{opacity:0.35; box-shadow:none; pointer-events:none;}
+  .round-btn svg{width:19px; height:19px;}
+  .round-btn.send svg{width:18px; height:18px; margin-left:1px;}
+  .round-btn.listening{animation:pulse 1s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(63,167,155,0.4);} 50%{box-shadow:0 0 0 9px rgba(63,167,155,0);}}
+
+  /* ================= HISTORY SCREEN ================= */
+  #screen-history .h-head{
+    padding:18px 18px 10px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  }
+  #screen-history h2{font-family:var(--display); font-weight:800; font-size:19px; margin:0; color:var(--forest-2);}
+  .clear-link{font-family:var(--mono); font-size:11px; font-weight:600; color:var(--danger); background:none;}
+  .h-list{flex:1; overflow-y:auto; padding:6px 16px 20px; display:flex; flex-direction:column; gap:10px;}
+  .h-card{
+    background:var(--card); border-radius:var(--r-md); padding:14px; border:1px solid var(--line);
+    box-shadow:var(--shadow-sm); display:flex; gap:12px; align-items:flex-start;
+  }
+  .h-icon{width:38px; height:38px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+  .h-icon svg{width:18px; height:18px; color:#fff;}
+  .h-icon.voice{background:linear-gradient(135deg, var(--sand), #E8A94E);}
+  .h-icon.photo{background:linear-gradient(135deg, var(--water), #2C8A80);}
+  .h-body{flex:1; min-width:0;}
+  .h-top{display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:3px;}
+  .h-body h4{margin:0; font-family:var(--display); font-weight:700; font-size:13.5px; color:var(--forest-2);}
+  .h-date{font-family:var(--mono); font-size:10px; color:var(--ink-soft); opacity:0.6; flex-shrink:0;}
+  .h-body p{margin:0; font-size:12.5px; color:var(--ink-soft); line-height:1.5;}
+  .h-empty{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:40px 30px; text-align:center;}
+  .h-empty .mark-lg{width:56px; height:56px; border-radius:18px; background:var(--line); display:flex; align-items:center; justify-content:center;}
+  .h-empty .mark-lg svg{width:26px; height:26px; color:var(--ink-soft);}
+  .h-empty p{margin:0; font-size:13.5px; color:var(--ink-soft); max-width:32ch;}
+
+  /* ================= PROFILE SCREEN ================= */
+  #screen-profile{padding:18px 18px 30px; gap:22px;}
+  .p-block{display:flex; flex-direction:column; gap:10px;}
+  .p-label{font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--water); margin:0;}
+  .lang-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .lang-opt{
+    background:var(--card); border:2px solid var(--line); border-radius:var(--r-md);
+    padding:16px 8px; text-align:center; font-family:var(--display); font-weight:700; font-size:14px;
+    display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--ink-soft);
+  }
+  .lang-opt .ck{width:20px; height:20px; border-radius:50%; border:2px solid var(--line); display:flex; align-items:center; justify-content:center;}
+  .lang-opt .ck svg{width:11px; height:11px; color:#fff; opacity:0;}
+  .lang-opt.active{border-color:var(--lime-deep); color:var(--forest-2); background:#F3FBEE;}
+  .lang-opt.active .ck{background:var(--lime-deep); border-color:var(--lime-deep);}
+  .lang-opt.active .ck svg{opacity:1;}
+
+  .toggle-row{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:15px 16px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .toggle-row .tr-text h4{margin:0 0 2px; font-family:var(--display); font-weight:700; font-size:13.5px; color:var(--forest-2);}
+  .toggle-row .tr-text p{margin:0; font-size:11.5px; color:var(--ink-soft);}
+  .switch{width:44px; height:26px; border-radius:100px; background:var(--lime-deep); position:relative; flex-shrink:0;}
+  .switch::after{content:""; position:absolute; top:3px; right:3px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:var(--shadow-sm);}
+
+  .help-list{display:flex; flex-direction:column; gap:8px;}
+  .help-item{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden;}
+  .help-q{
+    width:100%; display:flex; align-items:center; gap:12px; padding:14px 15px;
+    text-align:left; font-family:var(--display); font-weight:700; font-size:13.5px; color:var(--forest-2);
+  }
+  .help-q .hq-icon{width:34px; height:34px; border-radius:11px; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .help-q .hq-icon svg{width:16px; height:16px; color:var(--water);}
+  .help-q svg.chev{width:14px; height:14px; margin-left:auto; color:var(--ink-soft); transition:transform 0.2s ease; flex-shrink:0;}
+  .help-item.open .chev{transform:rotate(90deg);}
+  .help-a{max-height:0; overflow:hidden; transition:max-height 0.25s ease;}
+  .help-item.open .help-a{max-height:200px;}
+  .help-a p{margin:0; padding:0 15px 16px 61px; font-size:12.5px; color:var(--ink-soft); line-height:1.6;}
+
+  .about-mini{
+    background:var(--forest); color:#fff; border-radius:var(--r-md); padding:18px;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .about-mini h4{margin:0; font-family:var(--display); font-weight:700; font-size:14px;}
+  .about-mini p{margin:0; font-size:12px; color:rgba(255,255,255,0.7); line-height:1.6;}
+
+  .version-note{text-align:center; font-family:var(--mono); font-size:10.5px; color:var(--ink-soft); opacity:0.5; padding-top:4px;}
+
+  /* ---------- Live camera modal ---------- */
+  .camera-modal{
+    position:absolute; inset:0; z-index:200; background:#000;
+    display:none; flex-direction:column;
+  }
+  .camera-modal.open{display:flex;}
+  .camera-modal video{flex:1; width:100%; object-fit:cover; background:#000;}
+  .camera-controls{
+    flex-shrink:0; display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px calc(22px + var(--safe-b));
+    background:rgba(0,0,0,0.55);
+  }
+  .cam-close{
+    width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15);
+    color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .cam-close svg{width:18px; height:18px;}
+  .cam-shutter{
+    width:66px; height:66px; border-radius:50%; background:#fff;
+    border:4px solid rgba(255,255,255,0.35); flex-shrink:0;
+  }
+  .cam-shutter:active{transform:scale(0.92);}
+
+  /* ---------- Tab bar ---------- */
+  .tabbar{
+    flex-shrink:0; display:flex; padding:8px 10px calc(8px + var(--safe-b));
+    background:var(--card); border-top:1px solid var(--line);
+  }
+  .tab{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding:6px 4px; border-radius:14px; color:var(--ink-soft); opacity:0.55;
+  }
+  .tab svg{width:21px; height:21px;}
+  .tab span{font-family:var(--mono); font-size:10px; font-weight:600;}
+  .tab.active{color:var(--forest-2); opacity:1; background:var(--bg);}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="app-bar">
+    <div class="app-brand">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg></span>
+      Filaha.AI
+    </div>
+    <span class="status-pill"><i></i><span data-i18n="app.status">Hors-ligne prêt</span></span>
+  </div>
+
+  <main>
+    <!-- ===== CHAT SCREEN ===== -->
+    <section id="screen-chat" class="screen active">
+      <div class="chat-scroll" id="chatScroll"></div>
+
+      <div class="chips-row" id="chipsRow">
+        <button class="chip" data-q="irrigation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg>
+          <span class="chip-label" data-i18n="app.chips.irrigation">Irrigation olivier</span>
+        </button>
+        <button class="chip" data-q="tomato">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="7"/><path d="M12 6c1-2 3-3 5-2"/></svg>
+          <span class="chip-label" data-i18n="app.chips.tomato">Maladie tomate</span>
+        </button>
+        <button class="chip" data-q="citrus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><path d="M12 5v14M5 12h14" opacity="0.6"/></svg>
+          <span class="chip-label" data-i18n="app.chips.citrus">Conseil agrumes</span>
+        </button>
+      </div>
+
+      <!-- Shown once a file/photo is picked, so the farmer sees confirmation before sending -->
+      <div class="attach-preview" id="attachPreview">
+        <div class="attach-icon" id="attachIconWrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.4 11.1 12.7 19.8a4.6 4.6 0 0 1-6.5-6.5l9-9a3 3 0 0 1 4.3 4.3l-8.9 9a1.4 1.4 0 0 1-2-2l8.1-8.1"/></svg>
+        </div>
+        <span class="attach-name" id="attachName">fichier.jpg</span>
+        <button class="attach-remove" id="attachRemove" aria-label="Retirer le fichier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="input-bar">
+        <button class="round-btn mic" id="micBtn" aria-label="Parler">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <button class="round-btn upload" id="uploadBtn" aria-label="Joindre une photo ou un fichier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.1 12.7 19.8a4.6 4.6 0 0 1-6.5-6.5l9-9a3 3 0 0 1 4.3 4.3l-8.9 9a1.4 1.4 0 0 1-2-2l8.1-8.1"/></svg>
+        </button>
+        <input class="text-field" id="textField" type="text" data-i18n-placeholder="app.chat.placeholder" placeholder="Écrivez votre question…" enterkeyhint="send">
+        <button class="round-btn cam" id="camBtn" aria-label="Scanner une feuille">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </button>
+        <button class="round-btn send is-empty" id="sendBtn" aria-label="Envoyer">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3 11.5 20.5 3 15 20.5l-3.8-6.7L3 11.5z"/></svg>
+        </button>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
+        <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx" style="display:none;">
+      </div>
+    </section>
+
+    <!-- ===== LIVE CAMERA MODAL ===== -->
+    <div class="camera-modal" id="cameraModal" aria-hidden="true">
+      <video id="cameraVideo" autoplay playsinline muted></video>
+      <canvas id="cameraCanvas" style="display:none;"></canvas>
+      <div class="camera-controls">
+        <button class="cam-close" id="cameraClose" aria-label="Fermer la caméra">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+        <button class="cam-shutter" id="cameraShutter" aria-label="Prendre la photo"></button>
+        <span style="width:44px;"></span>
+      </div>
+    </div>
+
+    <!-- ===== HISTORY SCREEN ===== -->
+    <section id="screen-history" class="screen">
+      <div class="h-head">
+        <h2 data-i18n="app.history.title">Historique</h2>
+        <button class="clear-link" id="clearHistoryBtn" data-i18n="app.history.clear">Effacer</button>
+      </div>
+      <div class="h-list" id="historyList"></div>
+    </section>
+
+    <!-- ===== PROFILE SCREEN ===== -->
+    <section id="screen-profile" class="screen">
+      <div class="p-block">
+        <p class="p-label" data-i18n="app.profile.langLabel">Langue</p>
+        <div class="lang-grid" id="langGrid">
+          <button class="lang-opt active" data-lang="fr">
+            <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Français
+          </button>
+          <button class="lang-opt" data-lang="ar">
+            <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            العربية
+          </button>
+        </div>
+      </div>
+
+      <div class="p-block">
+        <p class="p-label" data-i18n="app.profile.connectionLabel">Connexion</p>
+        <div class="toggle-row">
+          <div class="tr-text">
+            <h4 data-i18n="app.profile.offlineTitle">Mode hors-ligne</h4>
+            <p data-i18n="app.profile.offlineText">L'app reste utilisable sans connexion internet.</p>
+          </div>
+          <span class="switch"></span>
+        </div>
+      </div>
+
+      <div class="p-block">
+        <p class="p-label" data-i18n="app.profile.helpLabel">Aide</p>
+        <div class="help-list">
+          <div class="help-item">
+            <button class="help-q">
+              <span class="hq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1.2 1-1.2 1.9"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg></span>
+              <span data-i18n="app.profile.help1_q">Comment utiliser l'app</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="help-a"><p data-i18n="app.profile.help1_a">Appuyez sur le micro pour parler, sur le trombone pour joindre une photo ou un fichier, sur l'appareil photo pour scanner une feuille, ou écrivez votre question puis appuyez sur la flèche verte pour l'envoyer.</p></div>
+          </div>
+          <div class="help-item">
+            <button class="help-q">
+              <span class="hq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg></span>
+              <span data-i18n="app.profile.help2_q">À propos de Filaha.AI</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="help-a"><p data-i18n="app.profile.help2_a">Un assistant agricole gratuit pour les agriculteurs marocains, basé sur les guides de l'INRA, l'IAV Hassan II et l'ONCA.</p></div>
+          </div>
+          <div class="help-item">
+            <button class="help-q">
+              <span class="hq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v14H7l-3 3z"/></svg></span>
+              <span data-i18n="app.profile.help3_q">Contact</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="help-a"><p data-i18n="app.profile.help3_a">Une question ou une suggestion ? Le projet est ouvert sur GitHub (DragoneI).</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-mini">
+        <h4 data-i18n="app.profile.aboutTitle">Gratuit, aujourd'hui et demain</h4>
+        <p data-i18n="app.profile.aboutText">Filaha.AI reste 100% gratuit pour chaque agriculteur, sans abonnement ni frais caché.</p>
+      </div>
+
+      <p class="version-note" data-i18n="app.profile.version">Filaha.AI · Assistant agricole</p>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-screen="chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z"/></svg>
+      <span data-i18n="app.tabs.home">Accueil</span>
+    </button>
+    <button class="tab" data-screen="history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>
+      <span data-i18n="app.tabs.history">Historique</span>
+    </button>
+    <button class="tab" data-screen="profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+      <span data-i18n="app.tabs.profile">Profil</span>
+    </button>
+  </nav>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+  /* ---------------------------------------------------------------------
+     Wiring for the two new composer buttons (send + upload).
+     Kept separate from app.js on purpose: this project's convention is
+     "app.html handles display only, app.js holds all logic". Move this
+     block into app.js and delete this <script> tag once integrated.
+     --------------------------------------------------------------------- */
+  (function(){
+    const textField   = document.getElementById('textField');
+    const sendBtn      = document.getElementById('sendBtn');
+    const uploadBtn     = document.getElementById('uploadBtn');
+    const fileInput     = document.getElementById('fileInput');
+    const attachPreview = document.getElementById('attachPreview');
+    const attachName    = document.getElementById('attachName');
+    const attachIconWrap= document.getElementById('attachIconWrap');
+    const attachRemove  = document.getElementById('attachRemove');
+
+    let pendingFile = null;
+
+    function refreshSendState(){
+      const hasText = textField.value.trim().length > 0;
+      const hasFile = !!pendingFile;
+      sendBtn.classList.toggle('is-empty', !hasText && !hasFile);
+    }
+    textField.addEventListener('input', refreshSendState);
+
+    // Send: reuses whatever "submit on Enter" handler app.js already
+    // attaches to the text field (enterkeyhint="send" implies one exists),
+    // so this button doesn't need to know app.js's internal function names.
+    sendBtn.addEventListener('click', function(){
+      if (sendBtn.classList.contains('is-empty')) return;
+      textField.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter', code:'Enter', keyCode:13, which:13, bubbles:true}));
+      textField.dispatchEvent(new KeyboardEvent('keyup',   {key:'Enter', code:'Enter', keyCode:13, which:13, bubbles:true}));
+      // If app.js does not listen for Enter, replace the two lines above with
+      // a direct call to its send function instead, e.g. sendMessage(textField.value).
+    });
+
+    // Upload: shows a confirmation chip. Actual analysis of the picked file
+    // still needs wiring in app.js (same status as the camera button today —
+    // the backend has no vision pipeline yet, so this is UI-ready but inert
+    // until that lands).
+    uploadBtn.addEventListener('click', function(){ fileInput.click(); });
+
+    fileInput.addEventListener('change', function(){
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      pendingFile = file;
+      showAttachPreview(file);
+      refreshSendState();
+      // Hook point for app.js, e.g.: window.handleAttachedFile && window.handleAttachedFile(file);
+    });
+
+    function showAttachPreview(file){
+      attachName.textContent = file.name;
+      if (file.type && file.type.startsWith('image/')){
+        const url = URL.createObjectURL(file);
+        attachIconWrap.innerHTML = '<img src="' + url + '" alt="">';
+      } else {
+        attachIconWrap.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>';
+      }
+      attachPreview.classList.add('show');
+    }
+
+    attachRemove.addEventListener('click', function(){
+      pendingFile = null;
+      fileInput.value = '';
+      attachPreview.classList.remove('show');
+      refreshSendState();
+    });
+
+    refreshSendState();
+  })();
+</script>
+
+</body>
+</html>

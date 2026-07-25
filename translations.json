@@ -1,0 +1,216 @@
+{
+  "fr": {
+    "landing": {
+      "nav": {
+        "how": "Comment ça marche",
+        "crops": "Cultures",
+        "mission": "Mission",
+        "about": "À propos",
+        "cta": "Utiliser l'app"
+      },
+      "hero": {
+        "eyebrow": "Assistant agricole · Maroc",
+        "h1_pre": "L'agriculture marocaine, ",
+        "h1_highlight": "assistée",
+        "h1_post": " par l'IA.",
+        "sub": "Posez votre question à voix haute. Prenez une photo d'une feuille malade. Filaha.AI répond dans votre langue, avec un conseil concret.",
+        "badge1": "100% gratuit",
+        "badge2": "Prêt hors-ligne",
+        "badge3": "2 langues disponibles",
+        "ctaPrimary": "Utiliser Filaha.AI",
+        "ctaSecondary": "Voir comment ça marche"
+      },
+      "feature": {
+        "eyebrow": "Ce que fait Filaha.AI",
+        "item1_title": "Comprend votre langue",
+        "item1_text": "Posez vos questions à voix haute, en arabe ou en français.",
+        "item2_title": "Reconnaît les maladies",
+        "item2_text": "Une photo de feuille suffit pour un premier diagnostic.",
+        "item3_title": "Conseille sur l'eau",
+        "item3_text": "Des repères clairs pour l'irrigation, culture par culture.",
+        "foot": "Disponible sur mobile, sans installation"
+      },
+      "how": {
+        "k": "Comment ça marche",
+        "h2": "Trois gestes. Une réponse.",
+        "step1_title": "Parlez dans votre langue",
+        "step1_text": "Décrivez votre problème à voix haute, comme à un voisin. Pas besoin d'écrire.",
+        "step2_title": "Scannez une feuille",
+        "step2_text": "Une photo suffit pour repérer une maladie ou une carence sur olivier, tomate ou agrumes.",
+        "step3_title": "Recevez un conseil clair",
+        "step3_text": "Diagnostic, traitement, ou quantité d'eau à apporter — expliqué simplement."
+      },
+      "crops": {
+        "k": "Cultures couvertes",
+        "h2": "Trois cultures clés, en profondeur.",
+        "olive": "Olivier",
+        "tomato": "Tomate",
+        "citrus": "Agrumes",
+        "soon": "Bientôt"
+      },
+      "mission": {
+        "text": "Filaha.AI reste gratuit, pour que chaque agriculteur puisse en profiter — quelle que soit la taille de son exploitation.",
+        "signed": "— L'équipe Filaha.AI"
+      },
+      "about": {
+        "k": "À propos",
+        "h2": "Une IA agricole pensée pour le terrain marocain.",
+        "intro": "Filaha.AI répond aux besoins concrets des agriculteurs marocains : comprendre ce qui affecte une culture, savoir combien arroser, obtenir un conseil clair sans jargon technique. Il s'adresse en priorité aux petites et moyennes exploitations, souvent les moins bien servies par les outils numériques existants.",
+        "pillar1_title": "Pensé pour le terrain",
+        "pillar1_text": "Interface simple et rapide, utilisable en plein champ, même avec une connexion instable.",
+        "pillar2_title": "Des conseils vérifiés",
+        "pillar2_text": "Les réponses s'appuient sur les guides agronomiques de l'INRA, l'IAV Hassan II et l'ONCA.",
+        "pillar3_title": "Accessible à tous",
+        "pillar3_text": "Aucun abonnement, aucun frais caché. Filaha.AI reste gratuit pour chaque agriculteur."
+      },
+      "footer": {
+        "tagline": "Un assistant agricole gratuit, en arabe et en français, pour aider les agriculteurs marocains à protéger leurs cultures et mieux gérer l'irrigation.",
+        "navHeader": "Navigation",
+        "resourcesHeader": "Ressources",
+        "top": "Haut de page",
+        "copyright": "© 2026 Filaha.AI — Tous droits réservés."
+      }
+    },
+    "app": {
+      "status": "Hors-ligne prêt",
+      "chat": {
+        "welcome": "Salam ! Je suis Filaha.AI. Posez-moi une question, parlez, ou envoyez une photo d'une feuille.",
+        "placeholder": "Écrivez votre question…",
+        "photoCaption": "Photo envoyée pour diagnostic"
+      },
+      "chips": {
+        "irrigation": "Irrigation olivier",
+        "tomato": "Maladie tomate",
+        "citrus": "Conseil agrumes"
+      },
+      "knowledge": {
+        "irrigation": { "q": "Combien arroser mon olivier en été ?", "a": "Pour un olivier adulte en été : environ 40 à 60 litres d'eau, tous les 10 à 12 jours.", "src": "Guide INRA · irrigation" },
+        "tomato": { "q": "Ma tomate a des taches jaunes sur les feuilles", "a": "Signes possibles de mildiou. Traitement recommandé à base de cuivre, à appliquer tôt le matin, en évitant l'excès d'humidité.", "src": "Guide phytosanitaire · tomate" },
+        "citrus": { "q": "Comment protéger mes agrumes du froid ?", "a": "En dessous de 2°C, protégez les jeunes plants avec un voile agricole et arrosez légèrement la veille — le sol humide retient mieux la chaleur.", "src": "Guide ONCA · agrumes" },
+        "default": { "a": "Bonne question ! Le moteur de réponse détaillé arrive bientôt. En attendant, essayez une des suggestions ci-dessus." }
+      },
+      "history": {
+        "title": "Historique",
+        "clear": "Effacer",
+        "emptyText": "Aucune question pour l'instant. Posez votre première question depuis l'accueil.",
+        "seed1_title": "Irrigation olivier — été",
+        "seed2_title": "Feuille de tomate tachetée",
+        "seed3_title": "Protection agrumes — froid"
+      },
+      "profile": {
+        "langLabel": "Langue",
+        "connectionLabel": "Connexion",
+        "offlineTitle": "Mode hors-ligne",
+        "offlineText": "L'app reste utilisable sans connexion internet.",
+        "helpLabel": "Aide",
+        "help1_q": "Comment utiliser l'app",
+        "help1_a": "Appuyez sur le micro pour parler, sur l'appareil photo pour scanner une feuille, ou écrivez votre question directement.",
+        "help2_q": "À propos de Filaha.AI",
+        "help2_a": "Un assistant agricole gratuit pour les agriculteurs marocains, basé sur les guides de l'INRA, l'IAV Hassan II et l'ONCA.",
+        "help3_q": "Contact",
+        "help3_a": "Une question ou une suggestion ? Le projet est ouvert sur GitHub (DragoneI).",
+        "aboutTitle": "Gratuit, aujourd'hui et demain",
+        "aboutText": "Filaha.AI reste 100% gratuit pour chaque agriculteur, sans abonnement ni frais caché.",
+        "version": "Filaha.AI · Assistant agricole"
+      },
+      "tabs": { "home": "Accueil", "history": "Historique", "profile": "Profil" }
+    }
+  },
+  "ar": {
+    "landing": {
+      "nav": { "how": "كيف يعمل", "crops": "المحاصيل", "mission": "رسالتنا", "about": "من نحن", "cta": "استخدم التطبيق" },
+      "hero": {
+        "eyebrow": "مساعد فلاحي · المغرب",
+        "h1_pre": "الفلاحة المغربية ",
+        "h1_highlight": "بمساعدة",
+        "h1_post": " الذكاء الاصطناعي.",
+        "sub": "اطرح سؤالك بصوتك. التقط صورة لورقة مريضة. يجيبك Filaha.AI بلغتك، بنصيحة واضحة ومباشرة.",
+        "badge1": "مجاني 100%",
+        "badge2": "يعمل بدون إنترنت",
+        "badge3": "لغتان متاحتان",
+        "ctaPrimary": "استخدم Filaha.AI",
+        "ctaSecondary": "شاهد كيف يعمل"
+      },
+      "feature": {
+        "eyebrow": "ماذا يفعل Filaha.AI",
+        "item1_title": "يفهم لغتك",
+        "item1_text": "اطرح أسئلتك بصوتك، بالعربية أو بالفرنسية.",
+        "item2_title": "يتعرف على الأمراض",
+        "item2_text": "صورة واحدة لورقة كافية للحصول على تشخيص أولي.",
+        "item3_title": "ينصحك بشأن الماء",
+        "item3_text": "معايير واضحة للري، حسب كل محصول.",
+        "foot": "متاح على الهاتف، بدون تثبيت"
+      },
+      "how": {
+        "k": "كيف يعمل",
+        "h2": "ثلاث خطوات. جواب واحد.",
+        "step1_title": "تحدث بلغتك",
+        "step1_text": "صف مشكلتك بصوتك، كما لو كنت تتحدث لجارك. لا حاجة للكتابة.",
+        "step2_title": "صوّر ورقة",
+        "step2_text": "صورة واحدة كافية لاكتشاف مرض أو نقص في الزيتون أو الطماطم أو الحمضيات.",
+        "step3_title": "احصل على نصيحة واضحة",
+        "step3_text": "تشخيص، علاج، أو كمية الماء اللازمة — بشرح بسيط."
+      },
+      "crops": { "k": "المحاصيل المشمولة", "h2": "ثلاثة محاصيل أساسية، بتفصيل.", "olive": "الزيتون", "tomato": "الطماطم", "citrus": "الحمضيات", "soon": "قريبًا" },
+      "mission": { "text": "يبقى Filaha.AI مجانيًا بالكامل، ليستفيد منه كل فلاح، كبيرًا كان أو صغيرًا.", "signed": "— فريق Filaha.AI" },
+      "about": {
+        "k": "من نحن",
+        "h2": "ذكاء اصطناعي فلاحي، مصمم للأرض المغربية.",
+        "intro": "يلبي Filaha.AI الاحتياجات الحقيقية للفلاحين المغاربة: فهم ما يصيب المحصول، معرفة كمية الري اللازمة، والحصول على نصيحة واضحة بدون مصطلحات تقنية معقدة. يستهدف بالأساس صغار ومتوسطي الفلاحين، الذين غالبًا ما يكونون الأقل استفادة من الأدوات الرقمية الحالية.",
+        "pillar1_title": "مصمم للميدان",
+        "pillar1_text": "واجهة بسيطة وسريعة، قابلة للاستخدام في الحقل، حتى مع اتصال غير مستقر.",
+        "pillar2_title": "نصائح موثوقة",
+        "pillar2_text": "تعتمد الإجابات على الأدلة الفلاحية الصادرة عن INRA ومعهد الحسن الثاني للزراعة والبيطرة و ONCA.",
+        "pillar3_title": "متاح للجميع",
+        "pillar3_text": "بدون اشتراك، وبدون أي رسوم خفية. يبقى Filaha.AI مجانيًا لكل فلاح."
+      },
+      "footer": {
+        "tagline": "مساعد فلاحي مجاني، بالعربية والفرنسية، لمساعدة الفلاحين المغاربة على حماية محاصيلهم وتدبير الري بشكل أفضل.",
+        "navHeader": "روابط",
+        "resourcesHeader": "موارد",
+        "top": "أعلى الصفحة",
+        "copyright": "© 2026 Filaha.AI — جميع الحقوق محفوظة."
+      }
+    },
+    "app": {
+      "status": "يعمل بدون إنترنت",
+      "chat": {
+        "welcome": "السلام عليكم! أنا Filaha.AI. اطرح عليّ سؤالاً، تحدث، أو أرسل صورة لورقة.",
+        "placeholder": "اكتب سؤالك…",
+        "photoCaption": "تم إرسال الصورة للتشخيص"
+      },
+      "chips": { "irrigation": "ري الزيتون", "tomato": "مرض الطماطم", "citrus": "نصيحة الحمضيات" },
+      "knowledge": {
+        "irrigation": { "q": "كم أحتاج أن أروي شجرة الزيتون في الصيف؟", "a": "بالنسبة لشجرة زيتون بالغة في الصيف: حوالي 40 إلى 60 لترًا من الماء، كل 10 إلى 12 يومًا.", "src": "دليل INRA · الري" },
+        "tomato": { "q": "ظهرت بقع صفراء على أوراق نبات الطماطم لدي", "a": "قد تكون علامات على مرض اللفحة (المِلْديو). يُنصح باستخدام معالجة نحاسية، تُطبَّق في الصباح الباكر، مع تجنب الرطوبة الزائدة.", "src": "دليل وقاية النبات · الطماطم" },
+        "citrus": { "q": "كيف أحمي أشجار الحمضيات من البرد؟", "a": "عندما تقل الحرارة عن 2 درجة مئوية، غطِّ الشتلات الصغيرة بغطاء زراعي واسقِ الأرض قليلاً في اليوم السابق — التربة الرطبة تحتفظ بالحرارة بشكل أفضل.", "src": "دليل ONCA · الحمضيات" },
+        "default": { "a": "سؤال جيد! سيتوفر محرك الإجابات التفصيلية قريبًا. في الانتظار، جرّب أحد الاقتراحات أعلاه." }
+      },
+      "history": {
+        "title": "السجل",
+        "clear": "مسح",
+        "emptyText": "لا يوجد أي سؤال بعد. اطرح سؤالك الأول من الصفحة الرئيسية.",
+        "seed1_title": "ري الزيتون — الصيف",
+        "seed2_title": "ورقة طماطم مبقعة",
+        "seed3_title": "حماية الحمضيات — البرد"
+      },
+      "profile": {
+        "langLabel": "اللغة",
+        "connectionLabel": "الاتصال",
+        "offlineTitle": "وضع بدون إنترنت",
+        "offlineText": "يبقى التطبيق قابلاً للاستخدام بدون اتصال بالإنترنت.",
+        "helpLabel": "المساعدة",
+        "help1_q": "كيفية استخدام التطبيق",
+        "help1_a": "اضغط على الميكروفون للتحدث، على الكاميرا لتصوير ورقة، أو اكتب سؤالك مباشرة.",
+        "help2_q": "عن Filaha.AI",
+        "help2_a": "مساعد فلاحي مجاني للفلاحين المغاربة، يعتمد على أدلة INRA ومعهد الحسن الثاني للزراعة والبيطرة و ONCA.",
+        "help3_q": "تواصل معنا",
+        "help3_a": "سؤال أو اقتراح؟ المشروع مفتوح المصدر على GitHub (DragoneI).",
+        "aboutTitle": "مجاني، اليوم وغدًا",
+        "aboutText": "يبقى Filaha.AI مجانيًا بنسبة 100% لكل فلاح، بدون اشتراك أو رسوم خفية.",
+        "version": "Filaha.AI · مساعد فلاحي"
+      },
+      "tabs": { "home": "الرئيسية", "history": "السجل", "profile": "الملف الشخصي" }
+    }
+  }
+}
