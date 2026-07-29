@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<meta name="theme-color" content="#1E3B2C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Filaha.AI — Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="app.css">
+
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="app-bar">
+    <div class="app-brand">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg></span>
+      Filaha.AI
+    </div>
+    <span class="status-pill"><i></i><span data-i18n="app.status">Hors-ligne prêt</span></span>
+  </div>
+
+  <main>
+    <!-- ===== CHAT SCREEN ===== -->
+    <section id="screen-chat" class="screen active">
+      <div class="chat-scroll" id="chatScroll"></div>
+
+      <div class="chips-row" id="chipsRow">
+        <button class="chip" data-q="irrigation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg>
+          <span class="chip-label" data-i18n="app.chips.irrigation">Irrigation olivier</span>
+        </button>
+        <button class="chip" data-q="tomato">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="7"/><path d="M12 6c1-2 3-3 5-2"/></svg>
+          <span class="chip-label" data-i18n="app.chips.tomato">Maladie tomate</span>
+        </button>
+        <button class="chip" data-q="citrus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><path d="M12 5v14M5 12h14" opacity="0.6"/></svg>
+          <span class="chip-label" data-i18n="app.chips.citrus">Conseil agrumes</span>
+        </button>
+      </div>
+
+      <!-- Preview de la pièce jointe -->
+      <div class="attach-preview" id="attachPreview">
+        <div class="attach-icon" id="attachIconWrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.4 11.1 12.7 19.8a4.6 4.6 0 0 1-6.5-6.5l9-9a3 3 0 0 1 4.3 4.3l-8.9 9a1.4 1.4 0 0 1-2-2l8.1-8.1"/></svg>
+        </div>
+        <span class="attach-name" id="attachName">fichier.jpg</span>
+        <button class="attach-remove" id="attachRemove" aria-label="Retirer le fichier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="input-bar">
+        <button class="round-btn mic" id="micBtn" aria-label="Parler">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <button class="round-btn upload" id="uploadBtn" aria-label="Joindre une photo ou un fichier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.1 12.7 19.8a4.6 4.6 0 0 1-6.5-6.5l9-9a3 3 0 0 1 4.3 4.3l-8.9 9a1.4 1.4 0 0 1-2-2l8.1-8.1"/></svg>
+        </button>
+        <input class="text-field" id="textField" type="text" data-i18n-placeholder="app.chat.placeholder" placeholder="Écrivez votre question…" enterkeyhint="send">
+        <button class="round-btn cam" id="camBtn" aria-label="Scanner une feuille">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </button>
+        <button class="round-btn send is-empty" id="sendBtn" aria-label="Envoyer">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3 11.5 20.5 3 15 20.5l-3.8-6.7L3 11.5z"/></svg>
+        </button>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
+        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      </div>
+    </section>
+
+    <!-- ===== LIVE CAMERA MODAL ===== -->
+    <div class="camera-modal" id="cameraModal" aria-hidden="true">
+      <video id="cameraVideo" autoplay playsinline muted></video>
+      <canvas id="cameraCanvas" style="display:none;"></canvas>
+      <div class="camera-controls">
+        <button class="cam-close" id="cameraClose" aria-label="Fermer la caméra">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+        <button class="cam-shutter" id="cameraShutter" aria-label="Prendre la photo"></button>
+        <span style="width:44px;"></span>
+      </div>
+    </div>
+
+    <!-- ===== HISTORY SCREEN ===== -->
+    <section id="screen-history" class="screen">
+      <div class="h-head">
+        <h2 data-i18n="app.history.title">Historique</h2>
+        <button class="clear-link" id="clearHistoryBtn" data-i18n="app.history.clear">Effacer</button>
+      </div>
+      <div class="h-list" id="historyList"></div>
+    </section>
+
+    <!-- ===== PROFILE SCREEN ===== -->
+    <section id="screen-profile" class="screen">
+      <div class="p-block">
+        <p class="p-label" data-i18n="app.profile.langLabel">Langue</p>
+        <div class="lang-grid" id="langGrid">
+          <button class="lang-opt active" data-lang="fr">
+            <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Français
+          </button>
+          <button class="lang-opt" data-lang="ar">
+            <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            العربية
+          </button>
+        </div>
+      </div>
+
+      <div class="p-block">
+        <p class="p-label" data-i18n="app.profile.connectionLabel">Connexion</p>
+        <div class="toggle-row">
+          <div class="tr-text">
+            <h4 data-i18n="app.profile.offlineTitle">Mode hors-ligne</h4>
+            <p data-i18n="app.profile.offlineText">L'app reste utilisable sans connexion internet.</p>
+          </div>
+          <span class="switch"></span>
+        </div>
+      </div>
+
+      <div class="p-block">
+        <p class="p-label" data-i18n="app.profile.helpLabel">Aide</p>
+        <div class="help-list">
+          <div class="help-item">
+            <button class="help-q">
+              <span class="hq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1.2 1-1.2 1.9"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg></span>
+              <span data-i18n="app.profile.help1_q">Comment utiliser l'app</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="help-a"><p data-i18n="app.profile.help1_a">Appuyez sur le micro pour parler, sur le trombone pour joindre une photo ou un fichier, sur l'appareil photo pour scanner une feuille, ou écrivez votre question puis appuyez sur la flèche verte pour l'envoyer.</p></div>
+          </div>
+          <div class="help-item">
+            <button class="help-q">
+              <span class="hq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg></span>
+              <span data-i18n="app.profile.help2_q">À propos de Filaha.AI</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="help-a"><p data-i18n="app.profile.help2_a">Un assistant agricole gratuit pour les agriculteurs marocains, basé sur les guides de l'INRA, l'IAV Hassan II et l'ONCA.</p></div>
+          </div>
+          <div class="help-item">
+            <button class="help-q">
+              <span class="hq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v14H7l-3 3z"/></svg></span>
+              <span data-i18n="app.profile.help3_q">Contact</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="help-a"><p data-i18n="app.profile.help3_a">Une question ou une suggestion ? Le projet est ouvert sur GitHub.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-mini">
+        <h4 data-i18n="app.profile.aboutTitle">Gratuit, aujourd'hui et demain</h4>
+        <p data-i18n="app.profile.aboutText">Filaha.AI reste 100% gratuit pour chaque agriculteur, sans abonnement ni frais caché.</p>
+      </div>
+
+      <p class="version-note" data-i18n="app.profile.version">Filaha.AI · Assistant agricole</p>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-screen="chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z"/></svg>
+      <span data-i18n="app.tabs.home">Accueil</span>
+    </button>
+    <button class="tab" data-screen="history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>
+      <span data-i18n="app.tabs.history">Historique</span>
+    </button>
+    <button class="tab" data-screen="profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+      <span data-i18n="app.tabs.profile">Profil</span>
+    </button>
+  </nav>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
