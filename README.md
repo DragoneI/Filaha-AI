@@ -1,4 +1,8 @@
-# 🌿 Filaha.AI — RAG & Data Engineering Pipeline
+<p align="center">
+  <img src="banner.png" alt="Lion AI Logo" width="100%"/>
+</p>
+
+🌿 Filaha.AI — RAG & Data Engineering Pipeline
 
 > **Module Backend & Pipeline de Traitement de Données**  
 > Ce dépôt privé contient l'ensemble des scripts Python d'ingestion, d'embedding, de gestion vectorielle et d'analyse hybride (Vision + LLM) pour la plateforme **Filaha.AI**.
