@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner.png" alt="Lion AI Logo" width="100%"/>
+  <img src="banner.png" alt="Filaha.AI Logo" width="100%"/>
 </p>
 
 🌿 Filaha.AI — RAG & Data Engineering Pipeline
