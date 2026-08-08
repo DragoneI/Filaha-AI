@@ -13,6 +13,17 @@
 
 <link rel="stylesheet" href="app.css">
 
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1E3B2C">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
+
+
 </head>
 <body>
 
@@ -20,10 +31,12 @@
 
   <div class="app-bar">
     <div class="app-brand">
-      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0 1 14 0c0 4-3 8-7 10z"/></svg></span>
-      Filaha.AI
+      <img src="logo2.png" alt="Filaha.AI">
     </div>
-    <span class="status-pill"><i></i><span data-i18n="app.status">Hors-ligne prêt</span></span>
+    <button class="lang-quick-btn" id="quickLangBtn" aria-label="Changer de langue">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>
+      <span id="quickLangLabel">AR</span>
+    </button>
   </div>
 
   <main>
@@ -182,5 +195,40 @@
 </div>
 
 <script src="app.js"></script>
+<script>
+  // Bouton de switch de langue rapide (app-bar) : autonome, ne dépend
+  // d'aucune fonction interne d'app.js. Il déclenche un clic sur le bouton
+  // de langue déjà existant dans l'écran Profil (.lang-opt), donc il
+  // réutilise toute la logique de traduction/RTL déjà branchée dessus.
+  (function () {
+    function otherLangBtn() {
+      var active = document.querySelector('.lang-opt.active');
+      var opts = document.querySelectorAll('.lang-opt');
+      for (var i = 0; i < opts.length; i++) {
+        if (opts[i] !== active) return opts[i];
+      }
+      return null;
+    }
+    function updateQuickLabel() {
+      var target = otherLangBtn();
+      var label = document.getElementById('quickLangLabel');
+      if (target && label) label.textContent = target.dataset.lang.toUpperCase();
+    }
+    var quickBtn = document.getElementById('quickLangBtn');
+    if (quickBtn) {
+      quickBtn.addEventListener('click', function () {
+        var target = otherLangBtn();
+        if (target) target.click();
+        setTimeout(updateQuickLabel, 0);
+      });
+    }
+    document.querySelectorAll('.lang-opt').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setTimeout(updateQuickLabel, 0);
+      });
+    });
+    updateQuickLabel();
+  })();
+</script>
 </body>
 </html>
