@@ -29,7 +29,7 @@
   html[dir="rtl"] .about-mini h4, html[dir="rtl"] #screen-history h2{
     font-family:var(--display-ar);
   }
-  html[dir="rtl"] .status-pill, html[dir="rtl"] .p-label, html[dir="rtl"] .tab span,
+  html[dir="rtl"] .lang-quick-btn, html[dir="rtl"] .p-label, html[dir="rtl"] .tab span,
   html[dir="rtl"] .h-date, html[dir="rtl"] .version-note, html[dir="rtl"] .clear-link,
   html[dir="rtl"] .msg-bubble .src, html[dir="rtl"] .attach-name{
     font-family:var(--body-ar); letter-spacing:0;
@@ -76,20 +76,19 @@
     padding:16px 18px 12px;
     background:var(--bg);
   }
-  .app-brand{display:flex; align-items:center; gap:8px; font-family:var(--display); font-weight:700; font-size:15px;}
-  .app-brand .mark{
-    width:26px; height:26px; border-radius:9px;
-    background:linear-gradient(135deg, var(--lime) 0%, var(--water) 100%);
-    display:flex; align-items:center; justify-content:center;
-  }
-  .app-brand .mark svg{width:14px; height:14px; stroke:var(--forest-2);}
-  .status-pill{
+  .app-brand{display:flex; align-items:center;}
+  .app-brand img{height:30px; width:auto; display:block; object-fit:contain;}
+
+  /* Bouton de switch de langue rapide (remplace l'ancien badge "Hors-ligne prêt") */
+  .lang-quick-btn{
     display:flex; align-items:center; gap:6px;
-    font-family:var(--mono); font-size:10.5px; font-weight:600;
-    background:var(--card); border:1px solid var(--line);
-    padding:6px 10px; border-radius:100px; color:var(--ink-soft);
+    font-family:var(--mono); font-size:11px; font-weight:600;
+    background:var(--card); border:1px solid var(--line); color:var(--ink-soft);
+    padding:7px 12px; border-radius:100px; box-shadow:var(--shadow-sm);
+    transition:transform 0.15s ease, background 0.15s ease;
   }
-  .status-pill i{width:6px; height:6px; border-radius:50%; background:var(--lime-deep); flex-shrink:0;}
+  .lang-quick-btn:active{transform:scale(0.92); background:var(--bg);}
+  .lang-quick-btn svg{width:15px; height:15px; flex-shrink:0; color:var(--water);}
 
   /* ---------- Screens ---------- */
   main{flex:1; min-height:0; position:relative;}
