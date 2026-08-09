@@ -160,7 +160,9 @@ Les documents institutionnels marocains (INRA/ONCA) non explicitement sous licen
 
 ## 📄 Licence
 
-Projet personnel développé sous le nom **Pocket Coder**. Licence à préciser.
+Ce dépôt est **privé** — usage strictement personnel, tous droits réservés par défaut (pas de licence open source nécessaire ici).
+
+Le dépôt **frontend public** de Filaha.AI est distribué sous licence **MIT**.
 
 ---
 
